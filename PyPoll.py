@@ -1,5 +1,4 @@
 # The data we need to retrieve
-# 1. The total number of votes cast
 #2 A complete list of candidates who received votes
 #3. The percentagoe fo votes each candidate won
 #4. The total number of votes each candidate won
@@ -12,6 +11,15 @@ file_to_load = os.path.join("Resources", "election_results.csv")
 # Create a filename variable to a direct or indirect path to the file.
 file_to_save = os.path.join("analysis", "election_analysis.txt")
 # Open the election results and read the file.
+
+# 1. The total number of votes cast
+total_votes=0
+
+#Candidates init
+candidate_options=[]
+#votes init
+candidate_votes = {}
+#open csv & read
 with open(file_to_load) as election_data:
 
     # To do: read and analyze the data here.
@@ -19,12 +27,47 @@ with open(file_to_load) as election_data:
     file_reader = csv.reader(election_data)
     # Print the header row.
     headers = next(file_reader)
-    print(headers)
+
+    # Print each row in the CSV file.
+    for row in file_reader:
+        #print(row)
+        #2. add vote to count
+        total_votes +=1
+        # Print the candidate name from each row
+        candidate_name = row[2]
+        #uniq candidates
+        if candidate_name not in candidate_options:
+            #add candidate to candidate list
+            candidate_options.append(candidate_name)
+            # 2. Begin tracking that candidate's vote count.
+            candidate_votes[candidate_name] = 0
+
+    # count vote
+        candidate_votes[candidate_name]+=1
 
 
+# #3 print total votes
+# print(candidate_votes)
+# print(candidate_options)
+# print(total_votes)
 
+#WINNING
+winning_candidate=""
+winning_count=0
+winning_percentage=0
+for candidate_name in candidate_votes:
+    
+    votes=candidate_votes[candidate_name]
+    votes_percentage=float(votes)/float(total_votes)*100
+    print(f"{candidate_name}: {votes_percentage:.1f}% ({votes:,})")
+    if (votes > winning_count) and(votes_percentage > winning_percentage):
+        winning_count=votes
+        winning_candidate=candidate_name
+        winning_percentage=winning_count/total_votes*100
 
-
+print(f"--------------------------------\n"
+    f"The winner of the election is {winning_candidate} with {winning_count:,} votes or {winning_percentage:.1f}% of the popular vote\n"
+    f"---------------------------------\n")
 
 
 
