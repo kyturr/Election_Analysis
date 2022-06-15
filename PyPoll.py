@@ -50,26 +50,39 @@ with open(file_to_load) as election_data:
 # print(candidate_votes)
 # print(candidate_options)
 # print(total_votes)
+with open(file_to_save, "w") as txt_file:
+
+    election_results=(
+        f"\nElectionResults\n---------------------------\n"
+        f"Total Votes: {total_votes:,}\n--------------------------------------\n"
+        f"\n\n"
+    )
+    print(election_results,end="")
+    txt_file.write(election_results)
 
 #WINNING
-winning_candidate=""
-winning_count=0
-winning_percentage=0
-for candidate_name in candidate_votes:
+    winning_candidate=""
+    winning_count=0
+    winning_percentage=0
+    for candidate_name in candidate_votes:
     
-    votes=candidate_votes[candidate_name]
-    votes_percentage=float(votes)/float(total_votes)*100
-    print(f"{candidate_name}: {votes_percentage:.1f}% ({votes:,})")
-    if (votes > winning_count) and(votes_percentage > winning_percentage):
-        winning_count=votes
-        winning_candidate=candidate_name
-        winning_percentage=winning_count/total_votes*100
+        votes=candidate_votes[candidate_name]
+        votes_percentage=float(votes)/float(total_votes)*100
+        candidate_results=(f"{candidate_name}: {votes_percentage:.1f}% ({votes:,})\n")
+        print(candidate_results)
+        txt_file.write(candidate_results)
+        if (votes > winning_count) and(votes_percentage > winning_percentage):
+            winning_count=votes
+            winning_candidate=candidate_name
+            winning_percentage=winning_count/total_votes*100
 
-print(f"--------------------------------\n"
-    f"The winner of the election is {winning_candidate} with {winning_count:,} votes or {winning_percentage:.1f}% of the popular vote\n"
-    f"---------------------------------\n")
-
-
+    win_sum=(f"--------------------------------\n"
+        f"The winner of the election is {winning_candidate} \n{winning_count:,} votes \n{winning_percentage:.1f}% of the popular vote\n"
+        f"---------------------------------\n")
+    print(win_sum)
+    txt_file.write(win_sum)
+#print(win_sum)
+#declare in text
 
 # # Open the election results and read the file.
 # with open(file_to_load) as election_data:
